@@ -9,7 +9,7 @@ export const POST = async (request: Request, context: any) => {
 
     const { title, content, categories, thumbnailUrl } = body
 
-    await prisma.post.create({
+    const data = await prisma.post.create({
       data: {
         title,
         content,
@@ -22,7 +22,11 @@ export const POST = async (request: Request, context: any) => {
       },
     })
 
-    return NextResponse.json({ status: 'OK', message: '作成しました' })
+    return NextResponse.json({
+      status: 'OK',
+      message: '作成しました',
+      id: data.id,
+    })
   } catch (error) {
     if (error instanceof Error) {
       return NextResponse.json({ status: error.message }, { status: 400 })

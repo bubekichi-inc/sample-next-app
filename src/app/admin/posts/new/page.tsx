@@ -3,15 +3,20 @@
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { Post } from '@/types/post'
+import { useRouter } from 'next/navigation'
 
 export default function Home() {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const [thumbnailUrl, setThumbnailUrl] = useState('')
   const [categories, setCategories] = useState<Post['categories']>([])
+  const router = useRouter()
 
   const handleSubmit = async (e: React.FormEvent) => {
+    // フォームのデフォルトの動作をキャンセルします。
     e.preventDefault()
+
+    // 記事を作成します。
     const res = await fetch('/api/admin/posts', {
       method: 'POST',
       headers: {
@@ -19,7 +24,12 @@ export default function Home() {
       },
       body: JSON.stringify({ title, content, thumbnailUrl, categories }),
     })
-    
+
+    // レスポンスから作成した記事のIDを取得します。
+    const { id } = await res.json()
+
+    // 作成した記事の詳細ページに遷移します。
+    router.push(`/admin/posts/${id}`)
   }
 
   return (
