@@ -1,40 +1,45 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Post } from '@/types/post'
-import { useRouter } from 'next/navigation'
+import { useParams } from 'next/navigation'
 import { PostForm } from '../_components/PostForm'
 
 export default function Page() {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
-  const [thumbnailUrl, setThumbnailUrl] = useState(
-    'https://placehold.jp/800x400.png',
-  )
+  const [thumbnailUrl, setThumbnailUrl] = useState('')
   const [categories, setCategories] = useState<Post['categories']>([])
-  const router = useRouter()
+  const { id } = useParams()
 
   const handleSubmit = async (e: React.FormEvent) => {
     // フォームのデフォルトの動作をキャンセルします。
     e.preventDefault()
 
     // 記事を作成します。
-    const res = await fetch('/api/admin/posts', {
-      method: 'POST',
+    await fetch(`/api/admin/posts/${id}`, {
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ title, content, thumbnailUrl, categories }),
     })
 
-    // レスポンスから作成した記事のIDを取得します。
-    const { id } = await res.json()
-
-    // 作成した記事の詳細ページに遷移します。
-    router.push(`/admin/posts/${id}`)
-
-    alert('記事を作成しました。')
+    alert('記事を更新しました。')
   }
+
+  useEffect(() => {
+    const fetcher = async () => {
+      const res = await fetch(`/api/admin/posts/${id}`)
+      const { post } = await res.json()
+      setTitle(post.title)
+      setContent(post.content)
+      setThumbnailUrl(post.thumbnailUrl)
+      setCategories(post.categories)
+    }
+
+    fetcher()
+  }, [id])
 
   return (
     <div className="container mx-auto px-4">

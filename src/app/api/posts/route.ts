@@ -9,6 +9,9 @@ export const GET = async (request: NextRequest) => {
       include: {
         categories: true,
       },
+      orderBy: {
+        createdAt: 'desc',
+      },
     })
 
     return NextResponse.json({ status: 'OK', posts: posts }, { status: 200 })

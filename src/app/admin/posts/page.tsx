@@ -4,12 +4,12 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { Post } from '@/types/post'
 
-export default function Home() {
+export default function Page() {
   const [posts, setPosts] = useState<Post[]>([])
 
   useEffect(() => {
     const fetcher = async () => {
-      const res = await fetch('/api/posts')
+      const res = await fetch('/api/admin/posts')
       const { posts } = await res.json()
       setPosts(posts)
     }
