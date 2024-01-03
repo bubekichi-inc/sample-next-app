@@ -1,33 +1,24 @@
 'use client'
 
-import { API_BASE_URL } from '@/constants'
 import { useEffect, useState } from 'react'
 import classes from '../../../styles/Detail.module.scss'
-import { MicroCmsPost, Post } from '@/types/post'
+import { Post } from '@/types/post'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
 
 export default function Page() {
   // react-routerのuseParamsを使うと、URLのパラメータを取得できます。
   const { id } = useParams()
-  const [post, setPost] = useState<MicroCmsPost | null>(null)
+  const [post, setPost] = useState<Post | null>(null)
   const [loading, setLoading] = useState(false)
 
   // APIでpostsを取得する処理をuseEffectで実行します。
   useEffect(() => {
     const fetcher = async () => {
       setLoading(true)
-      const res = await fetch(
-        `https://2gzszlwapo.microcms.io/api/v1/posts/${id}`,
-        {
-          headers: {
-            'X-MICROCMS-API-KEY': process.env
-              .NEXT_PUBLIC_MICROCMS_API_KEY as string,
-          },
-        },
-      )
-      const data = await res.json()
-      setPost(data)
+      const res = await fetch(`/api/posts/${id}`)
+      const { post } = await res.json()
+      setPost(post)
       setLoading(false)
     }
 
@@ -48,7 +39,7 @@ export default function Page() {
     <div className={classes.container}>
       <div className={classes.post}>
         <div className={classes.postImage}>
-          <Image src={post.thumbnail.url} alt="" height={1000} width={1000} />
+          <Image src={post.thumbnailUrl} alt="" height={1000} width={1000} />
         </div>
         <div className={classes.postContent}>
           <div className={classes.postInfo}>
@@ -58,8 +49,8 @@ export default function Page() {
             <div className={classes.postCategories}>
               {post.categories.map((category) => {
                 return (
-                  <div key={category.id} className={classes.postCategory}>
-                    {category.name}
+                  <div key={category} className={classes.postCategory}>
+                    {category}
                   </div>
                 )
               })}
