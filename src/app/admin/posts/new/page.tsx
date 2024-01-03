@@ -43,6 +43,7 @@ export default function Page() {
       </div>
 
       <PostForm
+        mode="new"
         title={title}
         setTitle={setTitle}
         content={content}

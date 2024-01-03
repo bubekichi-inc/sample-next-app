@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { Post } from '@/types/post'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { PostForm } from '../_components/PostForm'
 
 export default function Page() {
@@ -11,6 +11,7 @@ export default function Page() {
   const [thumbnailUrl, setThumbnailUrl] = useState('')
   const [categories, setCategories] = useState<Post['categories']>([])
   const { id } = useParams()
+  const router = useRouter()
 
   const handleSubmit = async (e: React.FormEvent) => {
     // フォームのデフォルトの動作をキャンセルします。
@@ -26,6 +27,18 @@ export default function Page() {
     })
 
     alert('記事を更新しました。')
+  }
+
+  const handleDeletePost = async () => {
+    if (!confirm('記事を削除しますか？')) return
+
+    await fetch(`/api/admin/posts/${id}`, {
+      method: 'DELETE',
+    })
+
+    alert('記事を削除しました。')
+
+    router.push('/admin/posts')
   }
 
   useEffect(() => {
@@ -48,6 +61,7 @@ export default function Page() {
       </div>
 
       <PostForm
+        mode="edit"
         title={title}
         setTitle={setTitle}
         content={content}
@@ -57,6 +71,7 @@ export default function Page() {
         categories={categories}
         setCategories={setCategories}
         onSubmit={handleSubmit}
+        onDelete={handleDeletePost}
       />
     </div>
   )

@@ -1,6 +1,7 @@
 import React from 'react'
 
 interface Props {
+  mode: 'new' | 'edit'
   title: string
   setTitle: (title: string) => void
   content: string
@@ -10,9 +11,11 @@ interface Props {
   categories: string[]
   setCategories: (categories: string[]) => void
   onSubmit: (e: React.FormEvent) => void
+  onDelete?: () => void
 }
 
 export const PostForm: React.FC<Props> = ({
+  mode,
   title,
   setTitle,
   content,
@@ -22,6 +25,7 @@ export const PostForm: React.FC<Props> = ({
   categories,
   setCategories,
   onSubmit,
+  onDelete
 }) => {
   return (
     <form onSubmit={onSubmit} className="space-y-4">
@@ -73,8 +77,17 @@ export const PostForm: React.FC<Props> = ({
         type="submit"
         className="py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
       >
-        送信
+        {mode === 'new' ? '作成' : '更新'}
       </button>
+      {mode === 'edit' && (
+        <button
+          type="button"
+          className="py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 ml-2"
+          onClick={onDelete}
+        >
+          削除
+        </button>
+      )}
     </form>
   )
 }
