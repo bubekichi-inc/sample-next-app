@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Post } from '@/types/post'
+import { Post } from '@/types/Post'
 import { useRouter } from 'next/navigation'
 import { PostForm } from '../_components/PostForm'
 

@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Post } from '@/types/post'
+import { Post } from '@/types/Post'
 import { useParams, useRouter } from 'next/navigation'
 import { PostForm } from '../_components/PostForm'
 
@@ -57,7 +57,7 @@ export default function Page() {
   return (
     <div className="container mx-auto px-4">
       <div className="mb-8">
-        <h1 className="text-2xl font-bold mb-4">記事作成</h1>
+        <h1 className="text-2xl font-bold mb-4">記事編集</h1>
       </div>
 
       <PostForm

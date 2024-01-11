@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import classes from '../styles/Home.module.scss'
-import { Post } from '@/types/post'
+import { Post } from '@/types/Post'
 
 export default function Home() {
   const [posts, setPosts] = useState<Post[]>([])
