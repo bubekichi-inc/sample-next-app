@@ -25,7 +25,7 @@ export const PostForm: React.FC<Props> = ({
   categories,
   setCategories,
   onSubmit,
-  onDelete
+  onDelete,
 }) => {
   return (
     <form onSubmit={onSubmit} className="space-y-4">
@@ -64,6 +64,21 @@ export const PostForm: React.FC<Props> = ({
           className="block text-sm font-medium text-gray-700"
         >
           サムネイルURL
+        </label>
+        <input
+          type="text"
+          id="thumbnailUrl"
+          value={thumbnailUrl}
+          onChange={(e) => setThumbnailUrl(e.target.value)}
+          className="mt-1 block w-full rounded-md border border-gray-200 p-3"
+        />
+      </div>
+      <div>
+        <label
+          htmlFor="thumbnailUrl"
+          className="block text-sm font-medium text-gray-700"
+        >
+          カテゴリー
         </label>
         <input
           type="text"
