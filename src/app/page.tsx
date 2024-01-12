@@ -34,13 +34,13 @@ export default function Home() {
                           {new Date(post.createdAt).toLocaleDateString()}
                         </div>
                         <div className={classes.postCategories}>
-                          {post.categories.map((category) => {
+                          {post.postCategories.map((pc) => {
                             return (
                               <div
-                                key={category}
+                                key={pc.category.id}
                                 className={classes.postCategory}
                               >
-                                {category}
+                                {pc.category.name}
                               </div>
                             )
                           })}

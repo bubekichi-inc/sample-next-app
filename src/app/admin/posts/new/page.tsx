@@ -1,9 +1,9 @@
 'use client'
 
 import { useState } from 'react'
-import { Post } from '@/types/Post'
 import { useRouter } from 'next/navigation'
 import { PostForm } from '../_components/PostForm'
+import { Category } from '@/types/Category'
 
 export default function Page() {
   const [title, setTitle] = useState('')
@@ -11,7 +11,7 @@ export default function Page() {
   const [thumbnailUrl, setThumbnailUrl] = useState(
     'https://placehold.jp/800x400.png',
   ) // 画像URLは、一旦このURL固定でお願いします。後ほど画像アップロード処理を実装します。
-  const [categories, setCategories] = useState<Post['categories']>([])
+  const [categories, setCategories] = useState<Category[]>([])
   const router = useRouter()
 
   const handleSubmit = async (e: React.FormEvent) => {

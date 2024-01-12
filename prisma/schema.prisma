@@ -8,13 +8,13 @@ datasource db {
 }
 
 model Post {
-  id           Int            @id @default(autoincrement())
-  title        String
-  content      String
-  thumbnailUrl String
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
-  categories   PostCategory[]
+  id             Int            @id @default(autoincrement())
+  title          String
+  content        String
+  thumbnailUrl   String
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  postCategories PostCategory[]
 }
 
 model Category {
@@ -26,10 +26,11 @@ model Category {
 }
 
 model PostCategory {
+  id         Int      @id @default(autoincrement())
   postId     Int
   categoryId Int
-  post       Post     @relation(fields: [postId], references: [id])
-  category   Category @relation(fields: [categoryId], references: [id])
-
-  @@id([postId, categoryId])
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  post       Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 }

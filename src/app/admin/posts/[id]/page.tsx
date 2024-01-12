@@ -1,15 +1,16 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Post } from '@/types/Post'
 import { useParams, useRouter } from 'next/navigation'
 import { PostForm } from '../_components/PostForm'
+import { Category } from '@/types/Category'
+import { Post } from '@/types/Post'
 
 export default function Page() {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const [thumbnailUrl, setThumbnailUrl] = useState('')
-  const [categories, setCategories] = useState<Post['categories']>([])
+  const [categories, setCategories] = useState<Category[]>([])
   const { id } = useParams()
   const router = useRouter()
 
@@ -44,11 +45,11 @@ export default function Page() {
   useEffect(() => {
     const fetcher = async () => {
       const res = await fetch(`/api/admin/posts/${id}`)
-      const { post } = await res.json()
+      const { post }: { post: Post } = await res.json()
       setTitle(post.title)
       setContent(post.content)
       setThumbnailUrl(post.thumbnailUrl)
-      setCategories(post.categories)
+      setCategories(post.postCategories.map((pc) => pc.category))
     }
 
     fetcher()

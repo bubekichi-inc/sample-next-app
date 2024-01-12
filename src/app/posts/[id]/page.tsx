@@ -47,10 +47,13 @@ export default function Page() {
               {new Date(post.createdAt).toLocaleDateString()}
             </div>
             <div className={classes.postCategories}>
-              {post.categories.map((category) => {
+              {post.postCategories.map((postCategory) => {
                 return (
-                  <div key={category} className={classes.postCategory}>
-                    {category}
+                  <div
+                    key={postCategory.category.id}
+                    className={classes.postCategory}
+                  >
+                    {postCategory.category.name}
                   </div>
                 )
               })}

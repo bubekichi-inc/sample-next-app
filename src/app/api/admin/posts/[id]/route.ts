@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { PrismaClient } from '@prisma/client'
+import { Category, PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
@@ -15,7 +15,16 @@ export const GET = async (
         id: parseInt(id),
       },
       include: {
-        categories: true,
+        postCategories: {
+          include: {
+            category: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+        },
       },
     })
 
@@ -42,14 +51,23 @@ export const PUT = async (
         title,
         content,
         thumbnailUrl,
-        categories: {
-          set: categories,
-        },
-      },
-      include: {
-        categories: true,
       },
     })
+
+    await prisma.postCategory.deleteMany({
+      where: {
+        postId: parseInt(id),
+      },
+    })
+    // sqliteではcreateManyが使えないので、for文で回す
+    for (let category of categories) {
+      await prisma.postCategory.create({
+        data: {
+          postId: post.id,
+          categoryId: category.id,
+        },
+      })
+    }
 
     return NextResponse.json({ status: 'OK', post: post }, { status: 200 })
   } catch (error) {

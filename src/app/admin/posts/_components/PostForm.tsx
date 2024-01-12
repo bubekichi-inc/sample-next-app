@@ -1,4 +1,6 @@
+import { Category } from '@/types/Category'
 import React from 'react'
+import { CategoriesSelect } from './CategoriesSelect'
 
 interface Props {
   mode: 'new' | 'edit'
@@ -8,8 +10,8 @@ interface Props {
   setContent: (content: string) => void
   thumbnailUrl: string
   setThumbnailUrl: (thumbnailUrl: string) => void
-  categories: string[]
-  setCategories: (categories: string[]) => void
+  categories: Category[]
+  setCategories: (categories: Category[]) => void
   onSubmit: (e: React.FormEvent) => void
   onDelete?: () => void
 }
@@ -80,12 +82,9 @@ export const PostForm: React.FC<Props> = ({
         >
           カテゴリー
         </label>
-        <input
-          type="text"
-          id="thumbnailUrl"
-          value={thumbnailUrl}
-          onChange={(e) => setThumbnailUrl(e.target.value)}
-          className="mt-1 block w-full rounded-md border border-gray-200 p-3"
+        <CategoriesSelect
+          selectedCategories={categories}
+          setSelectedCategories={setCategories}
         />
       </div>
       <button

@@ -7,7 +7,16 @@ export const GET = async (request: NextRequest) => {
   try {
     const posts = await prisma.post.findMany({
       include: {
-        categories: true,
+        postCategories: {
+          include: {
+            category: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+        },
       },
       orderBy: {
         createdAt: 'desc',
@@ -31,14 +40,18 @@ export const POST = async (request: Request, context: any) => {
       data: {
         title,
         content,
-        categories: {
-          connect: categories.map((category: string) => ({
-            name: category,
-          })),
-        },
         thumbnailUrl,
       },
     })
+
+    for (const category of categories) {
+      await prisma.postCategory.create({
+        data: {
+          categoryId: category.id,
+          postId: data.id,
+        },
+      })
+    }
 
     return NextResponse.json({
       status: 'OK',
