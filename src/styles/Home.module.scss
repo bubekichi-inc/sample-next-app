@@ -45,11 +45,13 @@
 .postInfo {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .postDate {
   font-size: 0.8rem;
   color: #888;
+  margin-right: 1rem;
 }
 
 .postCategories {

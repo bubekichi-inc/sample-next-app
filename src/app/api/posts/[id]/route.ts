@@ -15,7 +15,16 @@ export const GET = async (
         id: parseInt(id),
       },
       include: {
-        categories: true,
+        postCategories: {
+          include: {
+            category: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+        },
       },
     })
 
