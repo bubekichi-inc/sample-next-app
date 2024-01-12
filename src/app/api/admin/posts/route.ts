@@ -43,7 +43,7 @@ export const POST = async (request: Request, context: any) => {
         thumbnailUrl,
       },
     })
-
+    // sqliteではcreateManyが使えないので、for文で回す
     for (const category of categories) {
       await prisma.postCategory.create({
         data: {

@@ -60,7 +60,7 @@ export const PUT = async (
       },
     })
     // sqliteではcreateManyが使えないので、for文で回す
-    for (let category of categories) {
+    for (const category of categories) {
       await prisma.postCategory.create({
         data: {
           postId: post.id,
