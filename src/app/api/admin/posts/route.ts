@@ -30,12 +30,16 @@ export const GET = async (request: NextRequest) => {
   }
 }
 
+// POSTという命名にすることで、POSTリクエストの時にこの関数が呼ばれる
 export const POST = async (request: Request, context: any) => {
   try {
+    // リクエストのbodyを取得
     const body = await request.json()
 
+    // bodyの中からtitle, content, categories, thumbnailUrlを取り出す
     const { title, content, categories, thumbnailUrl } = body
 
+    // 投稿をDBに生成
     const data = await prisma.post.create({
       data: {
         title,
@@ -43,7 +47,9 @@ export const POST = async (request: Request, context: any) => {
         thumbnailUrl,
       },
     })
-    // sqliteではcreateManyが使えないので、for文で回す
+
+    // 記事とカテゴリーの中間テーブルのレコードをDBに生成
+    // 本来複数同時生成には、createManyというメソッドがあるが、sqliteではcreateManyが使えないので、for文1つずつ実施
     for (const category of categories) {
       await prisma.postCategory.create({
         data: {
@@ -53,6 +59,7 @@ export const POST = async (request: Request, context: any) => {
       })
     }
 
+    // レスポンスを返す
     return NextResponse.json({
       status: 'OK',
       message: '作成しました',

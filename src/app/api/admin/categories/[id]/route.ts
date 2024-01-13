@@ -25,12 +25,16 @@ export const GET = async (
 
 export const PUT = async (
   request: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: { id: string } }, // ここでリクエストパラメータを受け取る
 ) => {
+  // paramsの中にidが入っているので、それを取り出す
   const { id } = params
+
+  // リクエストのbodyを取得
   const { name } = await request.json()
 
   try {
+    // idを指定して、Categoryを更新
     const category = await prisma.category.update({
       where: {
         id: parseInt(id),
@@ -40,6 +44,7 @@ export const PUT = async (
       },
     })
 
+    // レスポンスを返す
     return NextResponse.json({ status: 'OK', category }, { status: 200 })
   } catch (error) {
     if (error instanceof Error)
@@ -49,17 +54,20 @@ export const PUT = async (
 
 export const DELETE = async (
   request: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: { id: string } }, // ここでリクエストパラメータを受け取る
 ) => {
+  // paramsの中にidが入っているので、それを取り出す
   const { id } = params
 
   try {
+    // idを指定して、Categoryを削除
     await prisma.category.delete({
       where: {
         id: parseInt(id),
       },
     })
 
+    // レスポンスを返す
     return NextResponse.json({ status: 'OK' }, { status: 200 })
   } catch (error) {
     if (error instanceof Error)

@@ -35,14 +35,19 @@ export const GET = async (
   }
 }
 
+// PUTという命名にすることで、PUTリクエストの時にこの関数が呼ばれる
 export const PUT = async (
   request: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: { id: string } }, // ここでリクエストパラメータを受け取る
 ) => {
+  // paramsの中にidが入っているので、それを取り出す
   const { id } = params
+
+  // リクエストのbodyを取得
   const { title, content, categories, thumbnailUrl } = await request.json()
 
   try {
+    // idを指定して、Postを更新
     const post = await prisma.post.update({
       where: {
         id: parseInt(id),
@@ -54,12 +59,15 @@ export const PUT = async (
       },
     })
 
+    // 一旦、記事とカテゴリーの中間テーブルのレコードを全て削除
     await prisma.postCategory.deleteMany({
       where: {
         postId: parseInt(id),
       },
     })
-    // sqliteではcreateManyが使えないので、for文で回す
+
+    // 記事とカテゴリーの中間テーブルのレコードをDBに生成
+    // 本来複数同時生成には、createManyというメソッドがあるが、sqliteではcreateManyが使えないので、for文1つずつ実施
     for (const category of categories) {
       await prisma.postCategory.create({
         data: {
@@ -69,6 +77,7 @@ export const PUT = async (
       })
     }
 
+    // レスポンスを返す
     return NextResponse.json({ status: 'OK', post: post }, { status: 200 })
   } catch (error) {
     if (error instanceof Error)
@@ -76,19 +85,23 @@ export const PUT = async (
   }
 }
 
+// DELETEという命名にすることで、DELETEリクエストの時にこの関数が呼ばれる
 export const DELETE = async (
   request: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: { id: string } }, // ここでリクエストパラメータを受け取る
 ) => {
+  // paramsの中にidが入っているので、それを取り出す
   const { id } = params
 
   try {
+    // idを指定して、Postを削除
     await prisma.post.delete({
       where: {
         id: parseInt(id),
       },
     })
 
+    // レスポンスを返す
     return NextResponse.json({ status: 'OK' }, { status: 200 })
   } catch (error) {
     if (error instanceof Error)

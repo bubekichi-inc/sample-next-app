@@ -7,6 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// ブログ記事テーブル
 model Post {
   id             Int            @id @default(autoincrement())
   title          String
@@ -17,6 +18,7 @@ model Post {
   postCategories PostCategory[]
 }
 
+// カテゴリーテーブル
 model Category {
   id        Int            @id @default(autoincrement())
   name      String
@@ -25,6 +27,7 @@ model Category {
   posts     PostCategory[]
 }
 
+// ブログ記事とカテゴリーを多対多で紐付ける中間テーブル
 model PostCategory {
   id         Int      @id @default(autoincrement())
   postId     Int
