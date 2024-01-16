@@ -1,6 +1,8 @@
 import { Category } from '@/types/Category'
-import React from 'react'
+import React, { ChangeEvent } from 'react'
 import { CategoriesSelect } from './CategoriesSelect'
+import { v4 as uuidv4 } from 'uuid'
+import { supabase } from '@/utils/supabase'
 
 interface Props {
   mode: 'new' | 'edit'
@@ -29,6 +31,25 @@ export const PostForm: React.FC<Props> = ({
   onSubmit,
   onDelete,
 }) => {
+  const handleImageChange = async (
+    event: ChangeEvent<HTMLInputElement>,
+  ): Promise<void> => {
+    if (!event.target.files || event.target.files.length == 0) {
+      // 画像が選択されていないのでreturn
+      return
+    }
+
+    const file = event.target.files[0] // 選択された画像を取得
+
+    const filePath = `private/${uuidv4()}` // ファイル名を指定
+    const { data, error } = await supabase.storage
+      .from('post_thumbnail')
+      .upload(filePath, file, {
+        cacheControl: '3600',
+        upsert: false,
+      })
+  }
+
   return (
     <form onSubmit={onSubmit} className="space-y-4">
       <div>
@@ -67,13 +88,7 @@ export const PostForm: React.FC<Props> = ({
         >
           サムネイルURL
         </label>
-        <input
-          type="text"
-          id="thumbnailUrl"
-          value={thumbnailUrl}
-          onChange={(e) => setThumbnailUrl(e.target.value)}
-          className="mt-1 block w-full rounded-md border border-gray-200 p-3"
-        />
+        <input type="file" id="thumbnail" onChange={handleImageChange} />
       </div>
       <div>
         <label

@@ -1,9 +1,15 @@
+import { getCurrentUser } from '@/utils/supabase'
 import { PrismaClient } from '@prisma/client'
 import { NextRequest, NextResponse } from 'next/server'
 
 const prisma = new PrismaClient()
 
 export const GET = async (request: NextRequest) => {
+  const { currentUser, error } = await getCurrentUser(request)
+
+  if (error)
+    return NextResponse.json({ status: error.message }, { status: 400 })
+
   try {
     const posts = await prisma.post.findMany({
       include: {
@@ -23,6 +29,8 @@ export const GET = async (request: NextRequest) => {
       },
     })
 
+    await prisma.$disconnect()
+
     return NextResponse.json({ status: 'OK', posts: posts }, { status: 200 })
   } catch (error) {
     if (error instanceof Error)
@@ -31,7 +39,12 @@ export const GET = async (request: NextRequest) => {
 }
 
 // POSTという命名にすることで、POSTリクエストの時にこの関数が呼ばれる
-export const POST = async (request: Request, context: any) => {
+export const POST = async (request: NextRequest, context: any) => {
+  const { currentUser, error } = await getCurrentUser(request)
+
+  if (error)
+    return NextResponse.json({ status: error.message }, { status: 400 })
+
   try {
     // リクエストのbodyを取得
     const body = await request.json()
