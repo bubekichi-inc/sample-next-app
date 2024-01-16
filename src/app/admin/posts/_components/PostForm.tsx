@@ -2,7 +2,7 @@ import { Category } from '@/types/Category'
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import { CategoriesSelect } from './CategoriesSelect'
 import { v4 as uuidv4 } from 'uuid'
-import { supabase } from '@/utils/supabase'
+import { THUMBNAIL_IMAGE_BUCKET_NAME, supabase } from '@/utils/supabase'
 import Image from 'next/image'
 
 interface Props {
@@ -48,7 +48,7 @@ export const PostForm: React.FC<Props> = ({
 
     const filePath = `private/${uuidv4()}` // ファイル名を指定
     const { data, error } = await supabase.storage
-      .from('post_thumbnail')
+      .from(THUMBNAIL_IMAGE_BUCKET_NAME)
       .upload(filePath, file, {
         cacheControl: '3600',
         upsert: false,
@@ -63,6 +63,7 @@ export const PostForm: React.FC<Props> = ({
     setThumbnailImageKey(data.path)
   }
 
+  // DBに保存しているthumbnailImageKeyを元に、Supabaseから画像のURLを取得する
   useEffect(() => {
     if (!thumbnailImageKey) return
 
@@ -70,7 +71,7 @@ export const PostForm: React.FC<Props> = ({
       const {
         data: { publicUrl },
       } = await supabase.storage
-        .from('post_thumbnail')
+        .from(THUMBNAIL_IMAGE_BUCKET_NAME)
         .getPublicUrl(thumbnailImageKey)
 
       setThumbnailImageUrl(publicUrl)
