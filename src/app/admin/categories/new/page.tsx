@@ -4,10 +4,12 @@ import { useState } from 'react'
 import { Post } from '@/types/Post'
 import { useRouter } from 'next/navigation'
 import { CategoryForm } from '../_components/CategoryForm'
+import { useSupabaseSession } from '@/app/_hooks/useSupabaseSession'
 
 export default function Page() {
   const [name, setName] = useState('')
   const router = useRouter()
+  const { token } = useSupabaseSession()
 
   const handleSubmit = async (e: React.FormEvent) => {
     // フォームのデフォルトの動作をキャンセルします。
@@ -18,6 +20,7 @@ export default function Page() {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token,
       },
       body: JSON.stringify({ name }),
     })

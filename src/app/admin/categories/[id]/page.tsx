@@ -4,11 +4,13 @@ import { useEffect, useState } from 'react'
 import { Post } from '@/types/Post'
 import { useParams, useRouter } from 'next/navigation'
 import { CategoryForm } from '../_components/CategoryForm'
+import { useSupabaseSession } from '@/app/_hooks/useSupabaseSession'
 
 export default function Page() {
   const [name, setName] = useState('')
   const { id } = useParams()
   const router = useRouter()
+  const { token } = useSupabaseSession()
 
   const handleSubmit = async (e: React.FormEvent) => {
     // フォームのデフォルトの動作をキャンセルします。
@@ -19,6 +21,7 @@ export default function Page() {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token,
       },
       body: JSON.stringify({ name }),
     })
@@ -31,6 +34,10 @@ export default function Page() {
 
     await fetch(`/api/admin/categories/${id}`, {
       method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token,
+      },
     })
 
     alert('カテゴリーを削除しました。')
@@ -39,14 +46,21 @@ export default function Page() {
   }
 
   useEffect(() => {
+    if (!token) return
+
     const fetcher = async () => {
-      const res = await fetch(`/api/admin/categories/${id}`)
+      const res = await fetch(`/api/admin/categories/${id}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + token,
+        },
+      })
       const { category } = await res.json()
       setName(category.name)
     }
 
     fetcher()
-  }, [id])
+  }, [id, token])
 
   return (
     <div className="container mx-auto px-4">
