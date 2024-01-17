@@ -13,6 +13,3 @@ export const getCurrentUser = async (request: NextRequest) => {
 
   return { currentUser: data, error }
 }
-
-// 画像のアップロード先のバケット名(Supabaseの管理画面で設定した名前)
-export const THUMBNAIL_IMAGE_BUCKET_NAME = 'post_thumbnail'

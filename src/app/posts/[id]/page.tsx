@@ -5,7 +5,7 @@ import classes from '../../../styles/Detail.module.scss'
 import { Post } from '@/types/Post'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
-import { THUMBNAIL_IMAGE_BUCKET_NAME, supabase } from '@/utils/supabase'
+import { supabase } from '@/utils/supabase'
 
 export default function Page() {
   // react-routerのuseParamsを使うと、URLのパラメータを取得できます。
@@ -38,7 +38,7 @@ export default function Page() {
       const {
         data: { publicUrl },
       } = await supabase.storage
-        .from(THUMBNAIL_IMAGE_BUCKET_NAME)
+        .from('post_thumbnail')
         .getPublicUrl(post.thumbnailImageKey)
 
       setThumbnailImageUrl(publicUrl)
