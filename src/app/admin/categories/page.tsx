@@ -17,7 +17,7 @@ export default function Page() {
       const res = await fetch('/api/admin/categories', {
         headers: {
           'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + token,
+          Authorization: token,
         },
       })
       const { categories } = await res.json()

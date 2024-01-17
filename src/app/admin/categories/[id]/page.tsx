@@ -21,7 +21,7 @@ export default function Page() {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + token,
+        Authorization: token,
       },
       body: JSON.stringify({ name }),
     })
@@ -36,7 +36,7 @@ export default function Page() {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + token,
+        Authorization: token,
       },
     })
 
@@ -52,7 +52,7 @@ export default function Page() {
       const res = await fetch(`/api/admin/categories/${id}`, {
         headers: {
           'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + token,
+          Authorization: token,
         },
       })
       const { category } = await res.json()

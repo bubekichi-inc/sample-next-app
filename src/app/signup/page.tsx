@@ -11,8 +11,8 @@ export default function Page() {
     event.preventDefault()
 
     const { error } = await supabase.auth.signUp({
-      email: email,
-      password: password,
+      email,
+      password,
       options: {
         emailRedirectTo: `http://localhost:3000/login`,
       },

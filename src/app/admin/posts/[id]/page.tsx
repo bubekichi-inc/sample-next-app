@@ -24,7 +24,7 @@ export default function Page() {
     await fetch(`/api/admin/posts/${id}`, {
       method: 'PUT',
       headers: {
-        Authorization: 'Bearer ' + token,
+        Authorization: token,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ title, content, thumbnailImageKey, categories }),
@@ -39,7 +39,7 @@ export default function Page() {
     await fetch(`/api/admin/posts/${id}`, {
       method: 'DELETE',
       headers: {
-        Authorization: 'Bearer ' + token,
+        Authorization: token,
         'Content-Type': 'application/json',
       },
     })
@@ -55,7 +55,7 @@ export default function Page() {
     const fetcher = async () => {
       const res = await fetch(`/api/admin/posts/${id}`, {
         headers: {
-          Authorization: 'Bearer ' + token,
+          Authorization: token,
           'Content-Type': 'application/json',
         },
       })

@@ -10,6 +10,7 @@ export default function AdminLayout({
   children: React.ReactNode
 }) {
   useRouteGuard()
+
   const pathname = usePathname()
   const isSelected = (href: string) => {
     return pathname.includes(href)

@@ -15,8 +15,8 @@ export default function Page() {
     const fetcher = async () => {
       const res = await fetch('/api/admin/posts', {
         headers: {
-          Authorization: 'Bearer ' + token,
           'Content-Type': 'application/json',
+          Authorization: token, // 👈 Header に token を付与
         },
       })
       const { posts } = await res.json()

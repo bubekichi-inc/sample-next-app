@@ -8,10 +8,10 @@ export const supabase = createClient(
 
 /** APIリクエストのtokenの検証。検証できればログインユーザー（Supabase）情報を返す */
 export const getCurrentUser = async (request: NextRequest) => {
-  const token = request.headers.get('Authorization')?.split(' ')[1]
+  const token = request.headers.get('Authorization')!
   const { data, error } = await supabase.auth.getUser(token)
 
-  return { currentUser: data.user, error }
+  return { currentUser: data, error }
 }
 
 // 画像のアップロード先のバケット名(Supabaseの管理画面で設定した名前)
