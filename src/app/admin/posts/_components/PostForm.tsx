@@ -1,7 +1,7 @@
 import { Category } from '@/types/Category'
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import { CategoriesSelect } from './CategoriesSelect'
-import { v4 as uuidv4 } from 'uuid'
+import { v4 as uuidv4 } from 'uuid' // 固有のIDを生成するライブラリです。`npm install uuid @types/uuid` でインストールしてください。
 import { supabase } from '@/utils/supabase'
 import Image from 'next/image'
 
@@ -44,9 +44,13 @@ export const PostForm: React.FC<Props> = ({
       return
     }
 
+    // eventから画像を取得
     const file = event.target.files[0] // 選択された画像を取得
 
+    // private/は必ずつけること
     const filePath = `private/${uuidv4()}` // ファイル名を指定
+
+    // Supabase Storageに画像をアップロード
     const { data, error } = await supabase.storage
       .from('post_thumbnail')
       .upload(filePath, file, {
@@ -54,12 +58,13 @@ export const PostForm: React.FC<Props> = ({
         upsert: false,
       })
 
+    // アップロードに失敗したらエラーを表示
     if (error) {
       alert(error.message)
       return
     }
 
-    console.log(data)
+    // data.pathに画像のパスが格納されているので、thumbnailImageKeyに格納
     setThumbnailImageKey(data.path)
   }
 
@@ -118,7 +123,11 @@ export const PostForm: React.FC<Props> = ({
         >
           サムネイルURL
         </label>
-        <input type="file" id="thumbnail" onChange={handleImageChange} />
+        <input
+          type="file"
+          id="thumbnailImageKey"
+          onChange={handleImageChange}
+        />
         {thumbnailImageUrl && (
           <div className="mt-2">
             <Image
