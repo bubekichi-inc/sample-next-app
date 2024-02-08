@@ -1,85 +1,85 @@
-'use client'
+"use client";
 
-import { API_BASE_URL } from '@/constants'
-import { useState } from 'react'
-import { FormGroup } from './_components/FormGroup'
-import { Label } from './_components/Label'
-import { Input } from './_components/Input'
-import { ErrorMessage } from './_components/ErrorMessage'
-import { Textarea } from './_components/Textarea'
+import { API_BASE_URL } from "@/constants";
+import { useState } from "react";
+import { FormGroup } from "./_components/FormGroup";
+import { Label } from "./_components/Label";
+import { Input } from "./_components/Input";
+import { ErrorMessage } from "./_components/ErrorMessage";
+import { Textarea } from "./_components/Textarea";
 
 export default function Page() {
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [message, setMessage] = useState('')
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
 
-  const [nameErrorMessage, setNameErrorMessage] = useState('')
-  const [emailErrorMessage, setEmailErrorMessage] = useState('')
-  const [messageErrorMessage, setMessageErrorMessage] = useState('')
+  const [nameErrorMessage, setNameErrorMessage] = useState("");
+  const [emailErrorMessage, setEmailErrorMessage] = useState("");
+  const [messageErrorMessage, setMessageErrorMessage] = useState("");
 
   /** バリデーション */
   const valid = () => {
-    let isValid = true
-    let nameError = ''
-    let emailError = ''
-    let messageError = ''
+    let isValid = true;
+    let nameError = "";
+    let emailError = "";
+    let messageError = "";
 
     if (!name) {
-      nameError = 'お名前は必須です。'
-      isValid = false
+      nameError = "お名前は必須です。";
+      isValid = false;
     } else if (name.length > 30) {
-      nameError = 'お名前は30文字以内で入力してください。'
-      isValid = false
+      nameError = "お名前は30文字以内で入力してください。";
+      isValid = false;
     }
 
     if (!email) {
-      emailError = 'メールアドレスは必須です。'
-      isValid = false
+      emailError = "メールアドレスは必須です。";
+      isValid = false;
     } else if (!email.match(/.+@.+\..+/)) {
-      emailError = 'メールアドレスの形式が正しくありません。'
-      isValid = false
+      emailError = "メールアドレスの形式が正しくありません。";
+      isValid = false;
     }
 
     if (!message) {
-      messageError = '本文は必須です。'
-      isValid = false
+      messageError = "本文は必須です。";
+      isValid = false;
     } else if (message.length > 500) {
-      messageError = '本文は500文字以内で入力してください。'
-      isValid = false
+      messageError = "本文は500文字以内で入力してください。";
+      isValid = false;
     }
 
-    setNameErrorMessage(nameError)
-    setEmailErrorMessage(emailError)
-    setMessageErrorMessage(messageError)
+    setNameErrorMessage(nameError);
+    setEmailErrorMessage(emailError);
+    setMessageErrorMessage(messageError);
 
-    return isValid
-  }
+    return isValid;
+  };
 
   /** フォームの送信 */
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    if (!valid()) return
+    if (!valid()) return;
 
     await fetch(`${API_BASE_URL}/contacts`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ name, email, message }),
-    })
+    });
 
-    alert('送信しました。')
+    alert("送信しました。");
 
-    handleClear()
-  }
+    handleClear();
+  };
 
   /** フォームのクリア */
   const handleClear = () => {
-    setName('')
-    setEmail('')
-    setMessage('')
-  }
+    setName("");
+    setEmail("");
+    setMessage("");
+  };
 
   return (
     <div>
@@ -139,5 +139,5 @@ export default function Page() {
         </form>
       </div>
     </div>
-  )
+  );
 }

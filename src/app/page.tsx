@@ -1,22 +1,22 @@
-'use client'
+"use client";
 
-import Link from 'next/link'
-import { useEffect, useState } from 'react'
-import classes from '../styles/Home.module.scss'
-import { Post } from '@/types/Post'
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import classes from "../styles/Home.module.scss";
+import { Post } from "@/types/post";
 
 export default function Home() {
-  const [posts, setPosts] = useState<Post[]>([])
+  const [posts, setPosts] = useState<Post[]>([]);
 
   useEffect(() => {
     const fetcher = async () => {
-      const res = await fetch('api/posts')
-      const { posts } = await res.json()
-      setPosts(posts)
-    }
+      const res = await fetch("api/posts");
+      const { posts } = await res.json();
+      setPosts(posts);
+    };
 
-    fetcher()
-  }, [])
+    fetcher();
+  }, []);
 
   return (
     <div className="">
@@ -42,7 +42,7 @@ export default function Home() {
                               >
                                 {pc.category.name}
                               </div>
-                            )
+                            );
                           })}
                         </div>
                       </div>
@@ -55,10 +55,10 @@ export default function Home() {
                   </div>
                 </Link>
               </li>
-            )
+            );
           })}
         </ul>
       </div>
     </div>
-  )
+  );
 }

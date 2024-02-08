@@ -23,7 +23,7 @@ export default function Page() {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: token,
+        Authorization: token!,
       },
       body: JSON.stringify({ title, content, thumbnailImageKey, categories }),
     })

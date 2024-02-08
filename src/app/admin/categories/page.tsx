@@ -1,31 +1,30 @@
-'use client'
+"use client";
 
-import Link from 'next/link'
-import { useEffect, useState } from 'react'
-import { Post } from '@/types/Post'
-import { Category } from '@/types/Category'
-import { useSupabaseSession } from '@/app/_hooks/useSupabaseSession'
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { Category } from "@/types/Category";
+import { useSupabaseSession } from "@/app/_hooks/useSupabaseSession";
 
 export default function Page() {
-  const [categories, setCategories] = useState<Category[]>([])
-  const { token } = useSupabaseSession()
+  const [categories, setCategories] = useState<Category[]>([]);
+  const { token } = useSupabaseSession();
 
   useEffect(() => {
-    if (!token) return
+    if (!token) return;
 
     const fetcher = async () => {
-      const res = await fetch('/api/admin/categories', {
+      const res = await fetch("/api/admin/categories", {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: token,
         },
-      })
-      const { categories } = await res.json()
-      setCategories(categories)
-    }
+      });
+      const { categories } = await res.json();
+      setCategories(categories);
+    };
 
-    fetcher()
-  }, [token])
+    fetcher();
+  }, [token]);
 
   return (
     <div className="">
@@ -44,9 +43,9 @@ export default function Page() {
                 <div className="text-xl font-bold">{category.name}</div>
               </div>
             </Link>
-          )
+          );
         })}
       </div>
     </div>
-  )
+  );
 }

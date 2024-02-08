@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from "react";
 import classes from "../../../styles/Detail.module.scss";
-import { Post } from "@/types/Post";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { supabase } from "@/utils/supabase";
+import { Post } from "@/types/post";
 
 export default function Page() {
   // next/navigationのuseParamsを使うと、URLのパラメータを取得できます。
