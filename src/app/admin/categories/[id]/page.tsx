@@ -1,66 +1,65 @@
-'use client'
+"use client";
 
-import { useEffect, useState } from 'react'
-import { Post } from '@/types/Post'
-import { useParams, useRouter } from 'next/navigation'
-import { CategoryForm } from '../_components/CategoryForm'
-import { useSupabaseSession } from '@/app/_hooks/useSupabaseSession'
+import { useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { CategoryForm } from "../_components/CategoryForm";
+import { useSupabaseSession } from "@/app/_hooks/useSupabaseSession";
 
 export default function Page() {
-  const [name, setName] = useState('')
-  const { id } = useParams()
-  const router = useRouter()
-  const { token } = useSupabaseSession()
+  const [name, setName] = useState("");
+  const { id } = useParams();
+  const router = useRouter();
+  const { token } = useSupabaseSession();
 
   const handleSubmit = async (e: React.FormEvent) => {
     // フォームのデフォルトの動作をキャンセルします。
-    e.preventDefault()
+    e.preventDefault();
 
     // カテゴリーを作成します。
     await fetch(`/api/admin/categories/${id}`, {
-      method: 'PUT',
+      method: "PUT",
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: token,
+        "Content-Type": "application/json",
+        Authorization: token!,
       },
       body: JSON.stringify({ name }),
-    })
+    });
 
-    alert('カテゴリーを更新しました。')
-  }
+    alert("カテゴリーを更新しました。");
+  };
 
   const handleDeletePost = async () => {
-    if (!confirm('カテゴリーを削除しますか？')) return
+    if (!confirm("カテゴリーを削除しますか？")) return;
 
     await fetch(`/api/admin/categories/${id}`, {
-      method: 'DELETE',
+      method: "DELETE",
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: token,
+        "Content-Type": "application/json",
+        Authorization: token!,
       },
-    })
+    });
 
-    alert('カテゴリーを削除しました。')
+    alert("カテゴリーを削除しました。");
 
-    router.push('/admin/categories')
-  }
+    router.push("/admin/categories");
+  };
 
   useEffect(() => {
-    if (!token) return
+    if (!token) return;
 
     const fetcher = async () => {
       const res = await fetch(`/api/admin/categories/${id}`, {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: token,
         },
-      })
-      const { category } = await res.json()
-      setName(category.name)
-    }
+      });
+      const { category } = await res.json();
+      setName(category.name);
+    };
 
-    fetcher()
-  }, [id, token])
+    fetcher();
+  }, [id, token]);
 
   return (
     <div className="container mx-auto px-4">
@@ -76,5 +75,5 @@ export default function Page() {
         onDelete={handleDeletePost}
       />
     </div>
-  )
+  );
 }
