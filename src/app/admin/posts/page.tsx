@@ -1,30 +1,32 @@
-"use client";
+'use client'
 
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import { useSupabaseSession } from "@/app/_hooks/useSupabaseSession";
-import { Post } from "@/types/post";
+import Link from 'next/link'
+import { useEffect, useState } from 'react'
+import { useSupabaseSession } from '@/app/_hooks/useSupabaseSession'
+import { Post } from '@/types/post'
 
 export default function Page() {
-  const [posts, setPosts] = useState<Post[]>([]);
-  const { token } = useSupabaseSession();
+  const [posts, setPosts] = useState<Post[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const { token } = useSupabaseSession()
 
   useEffect(() => {
-    if (!token) return;
+    if (!token) return
 
     const fetcher = async () => {
-      const res = await fetch("/api/admin/posts", {
+      const res = await fetch('/api/admin/posts', {
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: token, // 👈 Header に token を付与
         },
-      });
-      const { posts } = await res.json();
-      setPosts([...posts]);
-    };
+      })
+      const { posts } = await res.json()
+      setPosts([...posts])
+      setIsLoading(false)
+    }
 
-    fetcher();
-  }, [token]);
+    fetcher()
+  }, [token])
 
   return (
     <div className="">
@@ -36,19 +38,22 @@ export default function Page() {
       </div>
 
       <div className="">
-        {posts.map((post) => {
-          return (
-            <Link href={`/admin/posts/${post.id}`} key={post.id}>
-              <div className="border-b border-gray-300 p-4 hover:bg-gray-100 cursor-pointer">
-                <div className="text-xl font-bold">{post.title}</div>
-                <div className="text-gray-500">
-                  {new Date(post.createdAt).toLocaleDateString()}
+        {isLoading && <div>loading...</div>}
+        {!isLoading && posts.length === 0 && <div>loading...</div>}
+        {!isLoading &&
+          posts.map((post) => {
+            return (
+              <Link href={`/admin/posts/${post.id}`} key={post.id}>
+                <div className="border-b border-gray-300 p-4 hover:bg-gray-100 cursor-pointer">
+                  <div className="text-xl font-bold">{post.title}</div>
+                  <div className="text-gray-500">
+                    {new Date(post.createdAt).toLocaleDateString()}
+                  </div>
                 </div>
-              </div>
-            </Link>
-          );
-        })}
+              </Link>
+            )
+          })}
       </div>
     </div>
-  );
+  )
 }
