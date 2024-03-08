@@ -39,7 +39,7 @@ export default function Page() {
 
       <div className="">
         {isLoading && <div>loading...</div>}
-        {!isLoading && posts.length === 0 && <div>loading...</div>}
+        {!isLoading && posts.length === 0 && <div>記事がありません</div>}
         {!isLoading &&
           posts.map((post) => {
             return (
