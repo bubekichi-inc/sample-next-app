@@ -17,7 +17,7 @@ export default function Page() {
       const res = await fetch('/api/admin/posts', {
         headers: {
           'Content-Type': 'application/json',
-          Authorization: token, // 👈 Header に token を付与
+          Authorization: token, // 👈 Header に token を付与。
         },
       })
       const { posts } = await res.json()
