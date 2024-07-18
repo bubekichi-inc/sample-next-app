@@ -20,13 +20,18 @@ export const GET = async (request: NextRequest) => {
   }
 }
 
+// カテゴリーの作成時に送られてくるリクエストのbodyの型
+interface CreateCategoryRequestBody {
+  name: string
+}
+
 export const POST = async (request: Request, context: any) => {
   try {
     // リクエストのbodyを取得
     const body = await request.json()
 
     // bodyの中からnameを取り出す
-    const { name } = body
+    const { name }: CreateCategoryRequestBody = body
 
     // カテゴリーをDBに生成
     const data = await prisma.category.create({

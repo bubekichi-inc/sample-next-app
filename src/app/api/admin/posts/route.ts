@@ -30,6 +30,13 @@ export const GET = async (request: NextRequest) => {
   }
 }
 
+interface CreatePostRequestBody {
+  title: string
+  content: string
+  categories: { id: number }[]
+  thumbnailUrl: string
+}
+
 // POSTという命名にすることで、POSTリクエストの時にこの関数が呼ばれる
 export const POST = async (request: Request, context: any) => {
   try {
@@ -37,7 +44,7 @@ export const POST = async (request: Request, context: any) => {
     const body = await request.json()
 
     // bodyの中からtitle, content, categories, thumbnailUrlを取り出す
-    const { title, content, categories, thumbnailUrl } = body
+    const { title, content, categories, thumbnailUrl }: CreatePostRequestBody = body
 
     // 投稿をDBに生成
     const data = await prisma.post.create({
