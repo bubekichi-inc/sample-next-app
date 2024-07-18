@@ -29,6 +29,11 @@ export const GET = async (
   }
 }
 
+// カテゴリーの更新時に送られてくるリクエストのbodyの型
+interface UpdateCategoryRequestBody {
+  name: string
+}
+
 export const PUT = async (
   request: NextRequest,
   { params }: { params: { id: string } }, // ここでリクエストパラメータを受け取る
@@ -42,7 +47,7 @@ export const PUT = async (
   const { id } = params
 
   // リクエストのbodyを取得
-  const { name } = await request.json()
+  const { name }: UpdateCategoryRequestBody = await request.json()
 
   try {
     // idを指定して、Categoryを更新
