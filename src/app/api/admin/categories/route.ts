@@ -1,9 +1,15 @@
+import { getCurrentUser } from '@/utils/supabase'
 import { PrismaClient } from '@prisma/client'
 import { NextRequest, NextResponse } from 'next/server'
 
 const prisma = new PrismaClient()
 
 export const GET = async (request: NextRequest) => {
+  const { currentUser, error } = await getCurrentUser(request)
+
+  if (error)
+    return NextResponse.json({ status: error.message }, { status: 400 })
+
   try {
     // カテゴリーの一覧をDBから取得
     const categories = await prisma.category.findMany({
