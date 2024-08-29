@@ -62,7 +62,7 @@ export default function Page() {
       <div className={classes.post}>
         {thumbnailImageUrl && (
           <div className={classes.postImage}>
-            <Image src={thumbnailImageUrl} alt="" height={1000} width={1000} />
+            <Image src={thumbnailImageUrl} alt="" height={800} width={800} />
           </div>
         )}
         <div className={classes.postContent}>
