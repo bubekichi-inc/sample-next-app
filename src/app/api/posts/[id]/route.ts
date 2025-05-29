@@ -16,13 +16,24 @@ export const GET = async (
       where: {
         id: parseInt(id),
       },
-      // カテゴリーも含めて取得
+      // カテゴリーとタグも含めて取得
       include: {
         postCategories: {
           include: {
             category: {
               select: {
                 // カテゴリーのidとnameだけ取得
+                id: true,
+                name: true,
+              },
+            },
+          },
+        },
+        postTags: {
+          include: {
+            tag: {
+              select: {
+                // タグのidとnameだけ取得
                 id: true,
                 name: true,
               },

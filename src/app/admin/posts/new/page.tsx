@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { PostForm } from '../_components/PostForm'
 import { Category } from '@/types/Category'
+import { Tag } from '@/types/Tag'
 import { useSupabaseSession } from '@/app/_hooks/useSupabaseSession'
 
 export default function Page() {
@@ -11,6 +12,7 @@ export default function Page() {
   const [content, setContent] = useState('')
   const [thumbnailImageKey, setThumbnailImageKey] = useState('')
   const [categories, setCategories] = useState<Category[]>([])
+  const [tags, setTags] = useState<Tag[]>([])
   const router = useRouter()
   const { token } = useSupabaseSession()
 
@@ -25,7 +27,13 @@ export default function Page() {
         'Content-Type': 'application/json',
         Authorization: token!,
       },
-      body: JSON.stringify({ title, content, thumbnailImageKey, categories }),
+      body: JSON.stringify({
+        title,
+        content,
+        thumbnailImageKey,
+        categories,
+        tags,
+      }),
     })
 
     // レスポンスから作成した記事のIDを取得します。
@@ -53,6 +61,8 @@ export default function Page() {
         setThumbnailImageKey={setThumbnailImageKey}
         categories={categories}
         setCategories={setCategories}
+        tags={tags}
+        setTags={setTags}
         onSubmit={handleSubmit}
       />
     </div>

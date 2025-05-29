@@ -1,22 +1,22 @@
-"use client";
+'use client'
 
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import classes from "../styles/Home.module.scss";
-import { Post } from "@/types/post";
+import Link from 'next/link'
+import { useEffect, useState } from 'react'
+import classes from '../styles/Home.module.scss'
+import { Post } from '@/types/post'
 
 export default function Home() {
-  const [posts, setPosts] = useState<Post[]>([]);
+  const [posts, setPosts] = useState<Post[]>([])
 
   useEffect(() => {
     const fetcher = async () => {
-      const res = await fetch("api/posts");
-      const { posts } = await res.json();
-      setPosts(posts);
-    };
+      const res = await fetch('api/posts')
+      const { posts } = await res.json()
+      setPosts(posts)
+    }
 
-    fetcher();
-  }, []);
+    fetcher()
+  }, [])
 
   return (
     <div className="">
@@ -42,7 +42,7 @@ export default function Home() {
                               >
                                 {pc.category.name}
                               </div>
-                            );
+                            )
                           })}
                         </div>
                       </div>
@@ -51,14 +51,24 @@ export default function Home() {
                         className={classes.postBody}
                         dangerouslySetInnerHTML={{ __html: post.content }}
                       />
+                      {/* タグ表示を追加 */}
+                      {post.postTags && post.postTags.length > 0 && (
+                        <div className={classes.postTags}>
+                          {post.postTags.map((pt) => (
+                            <div key={pt.tag.id} className={classes.postTag}>
+                              #{pt.tag.name}
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </Link>
               </li>
-            );
+            )
           })}
         </ul>
       </div>
     </div>
-  );
+  )
 }

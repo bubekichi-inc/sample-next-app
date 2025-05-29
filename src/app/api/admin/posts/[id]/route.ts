@@ -31,6 +31,16 @@ export const GET = async (
             },
           },
         },
+        postTags: {
+          include: {
+            tag: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+        },
       },
     })
 
@@ -46,6 +56,7 @@ interface UpdatePostRequestBody {
   title: string
   content: string
   categories: { id: number }[]
+  tags: { id: number }[]
   thumbnailImageKey: string
 }
 
@@ -63,7 +74,13 @@ export const PUT = async (
   const { id } = params
 
   // リクエストのbodyを取得
-  const { title, content, categories, thumbnailImageKey }: UpdatePostRequestBody = await request.json()
+  const {
+    title,
+    content,
+    categories,
+    tags,
+    thumbnailImageKey,
+  }: UpdatePostRequestBody = await request.json()
 
   try {
     // idを指定して、Postを更新
@@ -92,6 +109,23 @@ export const PUT = async (
         data: {
           postId: post.id,
           categoryId: category.id,
+        },
+      })
+    }
+
+    // 一旦、記事とタグの中間テーブルのレコードを全て削除
+    await prisma.postTag.deleteMany({
+      where: {
+        postId: parseInt(id),
+      },
+    })
+
+    // 記事とタグの中間テーブルのレコードをDBに生成
+    for (const tag of tags) {
+      await prisma.postTag.create({
+        data: {
+          postId: post.id,
+          tagId: tag.id,
         },
       })
     }

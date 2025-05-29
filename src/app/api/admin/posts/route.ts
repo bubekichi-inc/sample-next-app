@@ -23,6 +23,16 @@ export const GET = async (request: NextRequest) => {
             },
           },
         },
+        postTags: {
+          include: {
+            tag: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+        },
       },
       orderBy: {
         createdAt: 'desc',
@@ -42,6 +52,7 @@ interface CreatePostRequestBody {
   title: string
   content: string
   categories: { id: number }[]
+  tags: { id: number }[]
   thumbnailImageKey: string
 }
 
@@ -56,8 +67,14 @@ export const POST = async (request: NextRequest, context: any) => {
     // リクエストのbodyを取得
     const body = await request.json()
 
-    // bodyの中からtitle, content, categories, thumbnailUrlを取り出す
-    const { title, content, categories, thumbnailImageKey }: CreatePostRequestBody = body
+    // bodyの中からtitle, content, categories, tags, thumbnailUrlを取り出す
+    const {
+      title,
+      content,
+      categories,
+      tags,
+      thumbnailImageKey,
+    }: CreatePostRequestBody = body
 
     // 投稿をDBに生成
     const data = await prisma.post.create({
@@ -74,6 +91,16 @@ export const POST = async (request: NextRequest, context: any) => {
       await prisma.postCategory.create({
         data: {
           categoryId: category.id,
+          postId: data.id,
+        },
+      })
+    }
+
+    // 記事とタグの中間テーブルのレコードをDBに生成
+    for (const tag of tags) {
+      await prisma.postTag.create({
+        data: {
+          tagId: tag.id,
           postId: data.id,
         },
       })

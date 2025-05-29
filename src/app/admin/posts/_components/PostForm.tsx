@@ -1,6 +1,8 @@
 import { Category } from '@/types/Category'
+import { Tag } from '@/types/Tag'
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import { CategoriesSelect } from './CategoriesSelect'
+import { TagInput } from '@/app/_components/TagInput'
 import { v4 as uuidv4 } from 'uuid' // 固有のIDを生成するライブラリです。`npm install uuid @types/uuid` でインストールしてください。
 import { supabase } from '@/utils/supabase'
 import Image from 'next/image'
@@ -15,6 +17,8 @@ interface Props {
   setThumbnailImageKey: (thumbnailImageKey: string) => void
   categories: Category[]
   setCategories: (categories: Category[]) => void
+  tags: Tag[]
+  setTags: (tags: Tag[]) => void
   onSubmit: (e: React.FormEvent) => void
   onDelete?: () => void
 }
@@ -29,6 +33,8 @@ export const PostForm: React.FC<Props> = ({
   setThumbnailImageKey,
   categories,
   setCategories,
+  tags,
+  setTags,
   onSubmit,
   onDelete,
 }) => {
@@ -147,6 +153,10 @@ export const PostForm: React.FC<Props> = ({
           selectedCategories={categories}
           setSelectedCategories={setCategories}
         />
+      </div>
+      <div>
+        <label className="block text-sm font-medium text-gray-700">タグ</label>
+        <TagInput selectedTags={tags} setSelectedTags={setTags} />
       </div>
       <button
         type="submit"

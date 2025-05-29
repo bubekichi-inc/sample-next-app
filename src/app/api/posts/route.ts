@@ -21,6 +21,18 @@ export const GET = async (request: NextRequest) => {
             },
           },
         },
+        // タグも含めて取得
+        postTags: {
+          include: {
+            tag: {
+              // タグのidとnameだけ取得
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+        },
       },
       // 作成日時の降順で取得
       orderBy: {

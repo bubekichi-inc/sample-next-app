@@ -1,4 +1,5 @@
 import { Category } from './Category'
+import { Tag } from './Tag'
 
 export interface Post {
   id: number
@@ -6,6 +7,7 @@ export interface Post {
   content: string
   createdAt: string
   postCategories: { category: Category }[]
+  postTags: { tag: Tag }[]
   thumbnailImageKey: string
 }
 

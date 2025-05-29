@@ -16,6 +16,7 @@ model Post {
   createdAt         DateTime       @default(now())
   updatedAt         DateTime       @updatedAt
   postCategories    PostCategory[]
+  postTags          PostTag[]
 }
 
 model Category {
@@ -34,4 +35,22 @@ model PostCategory {
   updatedAt  DateTime @updatedAt
   category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   post       Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+}
+
+model Tag {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  posts     PostTag[]
+}
+
+model PostTag {
+  id        Int      @id @default(autoincrement())
+  postId    Int
+  tagId     Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  tag       Tag      @relation(fields: [tagId], references: [id], onDelete: Cascade)
 }
