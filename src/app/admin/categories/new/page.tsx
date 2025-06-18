@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { Post } from '@/types/Post'
 import { useRouter } from 'next/navigation'
 import { CategoryForm } from '../_components/CategoryForm'
 

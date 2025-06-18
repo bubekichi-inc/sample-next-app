@@ -2,7 +2,6 @@
 
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { Post } from '@/types/Post'
 import { Category } from '@/types/Category'
 
 export default function Page() {

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { PostForm } from '../_components/PostForm'
 import { Category } from '@/types/Category'
-import { Post } from '@/types/Post'
+import { Post } from '@/types/Post';
 
 export default function Page() {
   const [title, setTitle] = useState('')
